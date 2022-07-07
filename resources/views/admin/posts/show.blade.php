@@ -3,6 +3,7 @@
 @section('content')
     <h1> {{ $post->title }} </h1>
     <p>Slug: {{ $post->slug }}</p>
+    <p>Category: {{ $category ? $category->name : 'No category' }}</p>
     <p>{{ $post->content }}</p>
 
     <a class="btn btn-primary" href="{{ route('admin.posts.edit', ['post' => $post->id]) }}">Edit</a>

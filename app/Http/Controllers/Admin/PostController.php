@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
-use Illuminate\Support\Str;
+use App\Category;
 
 class PostController extends Controller
 {
@@ -27,7 +27,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $categories = Category::all();
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -42,7 +43,7 @@ class PostController extends Controller
         $data = $request->all();
         $post = new Post();
         $post->fill($data);
-        $post->slug = $this->genPostSlug($post->title);
+        $post->slug = Post::genPostSlug($post->title);
         $post->save();
 
         return redirect()->route('admin.posts.show', ['post' => $post->id]);
@@ -57,7 +58,10 @@ class PostController extends Controller
     public function show($id)
     {
         $post = Post::findOrFail($id);
-        return view('admin.posts.show', compact('post'));
+        $category = $post->category;
+        
+
+        return view('admin.posts.show', compact('post', 'category'));
     }
 
     /**
@@ -69,7 +73,8 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::findOrFail($id);
-        return view('admin.posts.edit', compact('post'));
+        $categories = Category::all();
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -81,12 +86,18 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate($this->genVailadtionRules());
+        $request->validate($this->genValidationRules());
         $data = $request->all();
         $post = Post::findOrFail($id);
-        $post->fill($data);
-        $post->slug = $this->genPostSlug($post->title);
-        $post->save();
+
+        // Fill + Save
+        // $post->fill($data);
+        // $post->slug = Post::genPostSlug($post->title);
+        // $post->save();
+
+        //Update
+        $data['slug'] = Post::genPostSlug($data['title']);
+        $post->update($data);
 
         return redirect()->route('admin.posts.show', ['post' => $post->id]);
     }
@@ -104,23 +115,11 @@ class PostController extends Controller
         return redirect()->route('posts.index');
     }
 
-    private function genPostSlug($title) {
-        $base_slug = Str::slug($title, '-');
-        $slug = $base_slug;
-        $count = 1;
-        $post_found = Post::where('slug', '=', $slug)->first();
-        while ($post_found) {
-            $slug = $base_slug . '-' . $count;
-            $post_found = Post::where('slug', '=', $slug)->first();
-            $count++;
-        }
-        return $slug;
-    }
-
     private function genValidationRules() {
         return [
             'title' => 'required|max:255',
-            'content' => 'required|max:30000'
+            'content' => 'required|max:30000',
+            'category_id' => 'nullable|exists:categories,id'
         ];
     }
 }
