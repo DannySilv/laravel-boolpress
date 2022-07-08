@@ -5184,7 +5184,17 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("div", [_c("h1", [_vm._v("Front Office | Home")]), _vm._v(" "), _c("ExampleComponent")], 1);
+  return _c("div", [_c("a", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      href: "/login"
+    }
+  }, [_vm._v("Login")]), _vm._v(" "), _c("a", {
+    staticClass: "btn btn-secondary",
+    attrs: {
+      href: "/register"
+    }
+  }, [_vm._v("Register")]), _vm._v(" "), _c("h1", [_vm._v("Front Office | Home")]), _vm._v(" "), _c("ExampleComponent")], 1);
 };
 
 var staticRenderFns = [];

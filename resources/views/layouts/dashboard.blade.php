@@ -66,6 +66,12 @@
                                 Create New Post
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ route('admin.categories.index') }}">
+                                <i class="fas fa-tag"></i>
+                                Categories
+                            </a>
+                        </li>
                     </ul>
 
                 </div>
