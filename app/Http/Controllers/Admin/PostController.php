@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
+use App\Tag;
 use App\Category;
 
 class PostController extends Controller
@@ -17,6 +18,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
+        $posts = Post::paginate(9);
         return view('admin.posts.index', compact('posts'));
     }
 
@@ -46,6 +48,10 @@ class PostController extends Controller
         $post->slug = Post::genPostSlug($post->title);
         $post->save();
 
+        if(isset($data['tags'])) {
+            $post->tags()->sync($data['tags']);
+        }
+
         return redirect()->route('admin.posts.show', ['post' => $post->id]);
     }
 
@@ -59,9 +65,9 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $category = $post->category;
-        
+        $tags = Tag::all();
 
-        return view('admin.posts.show', compact('post', 'category'));
+        return view('admin.posts.show', compact('post', 'category', 'tags'));
     }
 
     /**
@@ -74,7 +80,8 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $categories = Category::all();
-        return view('admin.posts.edit', compact('post', 'categories'));
+        $tags = Tag::all();
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -99,6 +106,12 @@ class PostController extends Controller
         $data['slug'] = Post::genPostSlug($data['title']);
         $post->update($data);
 
+        if(isset($data['tags'])) {
+            $post->tags()->sync($data['tags']);
+        } else {
+            $post->tags()->sync([]);
+        }
+
         return redirect()->route('admin.posts.show', ['post' => $post->id]);
     }
 
@@ -111,6 +124,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
+        $post->tags()->sync($id);
         $post->delete();
         return redirect()->route('posts.index');
     }

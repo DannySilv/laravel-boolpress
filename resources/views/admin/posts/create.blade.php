@@ -30,6 +30,15 @@
                 @endforeach
             </select>
         </div>
+        <div class="my-3">
+            <h4>Tags</h4>
+            @foreach ($tag as $tag)
+                <div class="form-check">
+                    <input name="tags[]" class="form-check-input" type="checkbox" value="{{ $tag-id }}" id="tag-{{ in_array($tag-id, old('tags', [])) ? 'checked' : '' }}">
+                    <label for="tag-{{ $tag-id }}" class="form-check-label">{{ $tag->name }}</label>
+                </div>
+            @endforeach
+        </div>
         <div class="form-group">
             <label for="content">Content</label>
             <textarea type="text" class="form-control" name="content" id="content">{{ old('content') }}</textarea>
