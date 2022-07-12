@@ -2,17 +2,17 @@
   <div>
     <a class="btn btn-primary" href="/login">Login</a>
     <a class="btn btn-secondary" href="/register">Register</a>
-    <h1>Front Office | Home</h1>
-    <ExampleComponent />
+    <h1 class="text-center">Front Office | Home</h1>
+    <Posts />
   </div>
 </template>
 
 <script>
-import ExampleComponent from '../components/ExampleComponent.vue';
+import Posts from '../components/Posts.vue';
 export default {
   name: 'App',
   components: {
-    ExampleComponent
+    Posts
   }
 }
 </script>
