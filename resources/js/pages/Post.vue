@@ -4,7 +4,7 @@
       <h1>{{ post.title }}</h1>
       <p>Category: {{ categoryName }}</p>
       <div class="mb-2">
-        <span v-for="tag in post.tags" :key="tag.id" class="badge badge-pill badge-info">{{ tag.name }}</span>
+        <router-link :to="{ name: 'tag', params: { slug: tag.slug } }" v-for="tag in post.tags" :key="tag.id" class="badge badge-pill badge-info">{{ tag.name }}</router-link>
       </div>
       <p>{{ post.content }}</p>
     </section>
