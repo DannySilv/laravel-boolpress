@@ -3,22 +3,7 @@
         <h1 class="text-center">Posts List</h1>
         <div class="row row-cols-3">
             <div v-for="post in posts" :key="post.id" class="col">
-                <div class="card mb-4">
-                    <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
-                    <div class="card-body">
-                        <h5 class="card-title">{{ post.title }}</h5>
-                        <p class="card-text">{{ truncateText(post.content, 50) }}</p>
-                    </div>
-                    <!-- <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                    <div class="card-body">
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
-                    </div> -->
-                </div>
+                <Card :post="post"/>
             </div>
         </div>
         <nav aria-label="...">
@@ -36,8 +21,12 @@
 </template>
 
 <script>
+    import Card from "../components/Card.vue";
     export default {
         name: 'Posts',
+        components: {
+            Card,
+        },
         data() {
             return {
                 posts: [],
@@ -61,13 +50,6 @@
                     this.lastPage = resp.data.results.last_page;
                 });
             },
-            truncateText(text, maxCharNumber) {
-                if (text.length > maxCharNumber) {
-                    return text.substr(0, maxCharNumber) + "...";
-                } else {
-                    return text;
-                }
-            }
         },
     }
 </script>
