@@ -72,6 +72,12 @@
                                 Categories
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{{ route('admin.tags.index') }}">
+                                <i class="fas fa-tags"></i>
+                                Tags
+                            </a>
+                        </li>
                     </ul>
 
                 </div>

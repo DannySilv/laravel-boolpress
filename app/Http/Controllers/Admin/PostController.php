@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\Tag;
 use App\Category;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -30,7 +31,8 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.posts.create', compact('categories'));
+        $tags = Tag::all();
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -43,6 +45,12 @@ class PostController extends Controller
     {
         $request->validate($this->genValidationRules());
         $data = $request->all();
+
+        if (isset($data['image'])) {
+            $image_path = Storage::put('post_covers', $data['image']);
+            $data['cover'] = $image_path;
+        }
+
         $post = new Post();
         $post->fill($data);
         $post->slug = Post::genPostSlug($post->title);
@@ -97,6 +105,14 @@ class PostController extends Controller
         $data = $request->all();
         $post = Post::findOrFail($id);
 
+        if (isset($data['image'])) {
+            if ($post->cover) {
+                Storage::delete($post->cover);
+            }
+            $image_path = Storage::put('post_covers', $data['image']);
+            $data['cover'] = $image_path;
+        }
+
         // Fill + Save
         // $post->fill($data);
         // $post->slug = Post::genPostSlug($post->title);
@@ -125,6 +141,9 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $post->tags()->sync($id);
+        if ($post->cover) {
+            Storage::delete($post->cover);
+        }
         $post->delete();
         return redirect()->route('posts.index');
     }
@@ -133,7 +152,8 @@ class PostController extends Controller
         return [
             'title' => 'required|max:255',
             'content' => 'required|max:30000',
-            'category_id' => 'nullable|exists:categories,id'
+            'category_id' => 'nullable|exists:categories,id',
+            'image' => 'image|max:1024'
         ];
     }
 }

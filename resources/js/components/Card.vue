@@ -1,6 +1,8 @@
 <template>
   <div class="card mb-4">
-    <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+    <div v-if="post.cover">
+      <img class="card-img-top" :src="post.cover" alt="Card image cap">
+    </div>
     <div class="card-body">
         <h5 class="card-title">{{ post.title }}</h5>
         <p class="category-text">Category: {{ categoryName }}</p>

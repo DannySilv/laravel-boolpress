@@ -5378,7 +5378,13 @@ var render = function render() {
 
   return _c("div", {
     staticClass: "card mb-4"
-  }, [_c("div", {
+  }, [_vm.post.cover ? _c("div", [_c("img", {
+    staticClass: "card-img-top",
+    attrs: {
+      src: _vm.post.cover,
+      alt: "Card image cap"
+    }
+  })]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "card-body"
   }, [_c("h5", {
     staticClass: "card-title"
@@ -5742,7 +5748,13 @@ var render = function render() {
 
   return _c("div", {
     staticClass: "container"
-  }, [_vm.post ? _c("section", [_c("h1", [_vm._v(_vm._s(_vm.post.title))]), _vm._v(" "), _c("p", [_vm._v("Category: " + _vm._s(_vm.categoryName))]), _vm._v(" "), _c("div", {
+  }, [_vm.post ? _c("section", [_c("h1", [_vm._v(_vm._s(_vm.post.title))]), _vm._v(" "), _vm.post.cover ? _c("div", [_c("img", {
+    staticClass: "card-img-top",
+    attrs: {
+      src: _vm.post.cover,
+      alt: "Card image cap"
+    }
+  })]) : _vm._e(), _vm._v(" "), _c("p", [_vm._v("Category: " + _vm._s(_vm.categoryName))]), _vm._v(" "), _c("div", {
     staticClass: "mb-2"
   }, _vm._l(_vm.post.tags, function (tag) {
     return _c("router-link", {
