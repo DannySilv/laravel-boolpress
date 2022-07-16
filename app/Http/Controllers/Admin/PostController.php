@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\Tag;
 use App\Category;
+use App\Mail\NewPostNotification;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -43,22 +45,29 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        // Data Validation
         $request->validate($this->genValidationRules());
         $data = $request->all();
 
+        // Upload Images
         if (isset($data['image'])) {
             $image_path = Storage::put('post_covers', $data['image']);
             $data['cover'] = $image_path;
         }
 
+        // Post Creation
         $post = new Post();
         $post->fill($data);
         $post->slug = Post::genPostSlug($post->title);
         $post->save();
 
+        // Tags Connection
         if(isset($data['tags'])) {
             $post->tags()->sync($data['tags']);
         }
+
+        // Email Verification
+        Mail::to('admin@boolpress.it')->send(new NewPostNotification($post));
 
         return redirect()->route('admin.posts.show', ['post' => $post->id]);
     }
