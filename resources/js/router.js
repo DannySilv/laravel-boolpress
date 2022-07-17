@@ -8,6 +8,7 @@ import About from "./pages/About.vue";
 import Blog from "./pages/Blog.vue";
 import Post from "./pages/Post.vue";
 import Tag from "./pages/Tag.vue";
+import Contacts from "./pages/Contacts.vue";
 import NotFound from "./pages/NotFound.vue";
 
 const router = new VueRouter({
@@ -37,6 +38,11 @@ const router = new VueRouter({
       path: "/tags/:slug",
       name: "tag",
       component: Tag
+    },
+    {
+      path: "/contacts",
+      name: "contacts",
+      component: Contacts
     },
     {
       path: "/*",

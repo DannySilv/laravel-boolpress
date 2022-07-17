@@ -17,6 +17,9 @@
             <li class="nav-item">
               <router-link class="nav-link active" aria-current="page" :to="{name: 'blog'}">Blog</router-link>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link active" aria-current="page" :to="{name: 'contacts'}">Contacts</router-link>
+            </li>
           </ul>
           <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
             <li class="nav-item mb-2 mb-lg-0">
